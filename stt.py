@@ -25,12 +25,19 @@ def stt():
     # driver = webdriver.Chrome(resource_path('./driver/chromedriver.exe'),options=options)
     driver = webdriver.Chrome(options=options)
     driver.get('https://speech-to-text-demo.ng.bluemix.net/')
-    WebDriverWait(driver, 20).until(ec.element_to_be_clickable((By.XPATH, "//*[@id=\"root\"]/div/div[6]/button[2]"))).click()
-    time.sleep(3)
+    WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.XPATH, "//*[@id=\"root\"]/div/div[6]/button[2]"))).click()
+    time.sleep(1)
+    # print(pyautogui.position())
     pyautogui.click(397,598)
     pyautogui.write('D:\\file.mp3')
     pyautogui.press('enter')
-
+    xpath_text="//*[@id=\"root\"]/div/div[7]/div/div"
+    time.sleep(10)
+    WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.XPATH, xpath_text)))
+    print(driver.find_element(By.XPATH, xpath_text).text)
+    
 # IBM speech to text
 stt()
+
+
 
