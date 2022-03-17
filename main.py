@@ -61,10 +61,21 @@ def recaptcha_login():
     stt=driver.find_element(By.XPATH, xpath_text).text
     print(stt)
     driver.close()
-    xpath_stt = "//*[@id=\"audio-response\"]"
-    WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.XPATH, xpath_stt)))
-    stt_output = driver.find_element(By.XPATH, xpath_stt)
-    stt_output.send_keys(stt)
+    time.sleep(3)
+    pyautogui.click(325,575)
+    pyautogui.write(stt)
+    pyautogui.click(350,680)
+    # driver.switch_to.default_content()
+    # WebDriverWait(driver, 10).until(
+    #     ec.frame_to_be_available_and_switch_to_it(
+    #         (By.CSS_SELECTOR, "iframe[title='recaptcha challenge expires in two minutes']")))
+    # xpath_stt = "//*[@id=\"audio-response\"]"
+    # WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, xpath_stt)))
+    # stt_output = driver.find_element(By.XPATH, xpath_stt)
+    # stt_output.send_keys(stt)
+    # WebDriverWait(driver, 10).until(
+    #     ec.element_to_be_clickable((By.XPATH, '//*[@id="recaptcha-verify-button"]'))).click()
 
 # Login recaptcha Account
 recaptcha_login()
+
