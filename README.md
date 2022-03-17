@@ -1,0 +1,1 @@
+Depedencies: pyautogui
