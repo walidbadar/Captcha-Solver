@@ -5,9 +5,12 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+import urllib.request, time
+
+inc=0
 
 def recaptcha_login():
-    global driver
+    global driver, inc
 
     # def resource_path(relative_path):
     #     try:
@@ -25,19 +28,26 @@ def recaptcha_login():
     driver = webdriver.Chrome(options=options)
     driver.get('https://www.google.com/recaptcha/api2/demo')
 
-    # captcha_iframe = WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.TAG_NAME, 'iframe')))
-    # ActionChains(driver).move_to_element(captcha_iframe).click().perform()
-    # captcha_box = WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.ID, 'g-recaptcha-response')))
-    # driver.execute_script("arguments[0].click()", captcha_box)
-
     WebDriverWait(driver, 20).until(ec.frame_to_be_available_and_switch_to_it(
         (By.CSS_SELECTOR, "iframe[src^='https://www.google.com/recaptcha/api2/anchor']")))
     WebDriverWait(driver, 20).until(ec.element_to_be_clickable((By.CSS_SELECTOR, "span#recaptcha-anchor"))).click()
+    time.sleep(5)
     driver.switch_to.default_content()
     WebDriverWait(driver, 20).until(
         ec.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[title='recaptcha challenge expires in two minutes']")))
     WebDriverWait(driver, 20).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "button#recaptcha-audio-button"))).click()
+    time.sleep(5)
+    WebDriverWait(driver, 20).until(
+        ec.element_to_be_clickable((By.XPATH, "/html/body/div/div/div[7]/a"))).click()
+    time.sleep(2)
+    for handle in driver.window_handles:
+        inc = inc+1
+        driver.switch_to.window(handle)
+        if inc==1:
+            url=driver.current_url
+            urllib.request.urlretrieve(url, "file.mp3")
+            inc=0
 
 # Login recaptcha Account
 recaptcha_login()
