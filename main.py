@@ -28,17 +28,17 @@ def recaptcha_login():
     driver = webdriver.Chrome(options=options)
     driver.get('https://www.google.com/recaptcha/api2/demo')
     time.sleep(5)
-    WebDriverWait(driver, 20).until(ec.frame_to_be_available_and_switch_to_it(
+    WebDriverWait(driver, 10).until(ec.frame_to_be_available_and_switch_to_it(
         (By.CSS_SELECTOR, "iframe[src^='https://www.google.com/recaptcha/api2/anchor']")))
-    WebDriverWait(driver, 20).until(ec.element_to_be_clickable((By.CSS_SELECTOR, "span#recaptcha-anchor"))).click()
+    WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, "span#recaptcha-anchor"))).click()
     time.sleep(5)
     driver.switch_to.default_content()
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 10).until(
         ec.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[title='recaptcha challenge expires in two minutes']")))
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.CSS_SELECTOR, "button#recaptcha-audio-button"))).click()
     time.sleep(5)
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 10).until(
         ec.element_to_be_clickable((By.XPATH, "/html/body/div/div/div[7]/a"))).click()
     for handle in driver.window_handles:
         inc = inc+1
@@ -51,6 +51,7 @@ def recaptcha_login():
     driver.get('https://speech-to-text-demo.ng.bluemix.net/')
     WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.XPATH, "//*[@id=\"root\"]/div/div[6]/button[2]"))).click()
     time.sleep(1)
+    # print(pyautogui.position())
     pyautogui.click(397,598)
     pyautogui.write('D:\\file.mp3')
     pyautogui.press('enter')
@@ -59,6 +60,11 @@ def recaptcha_login():
     WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.XPATH, xpath_text)))
     stt=driver.find_element(By.XPATH, xpath_text).text
     print(stt)
+    driver.close()
+    xpath_stt = "//*[@id=\"audio-response\"]"
+    WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.XPATH, xpath_stt)))
+    stt_output = driver.find_element(By.XPATH, xpath_stt)
+    stt_output.send_keys(stt)
 
 # Login recaptcha Account
 recaptcha_login()
